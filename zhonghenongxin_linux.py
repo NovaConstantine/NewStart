@@ -47,11 +47,15 @@ chrome_options.add_argument('--disable-gpu') #谷歌文档提到需要加上这�
 
 outcome = []
 
-def get_data(year,month):
+def get_data(c):
+
+    year = c[0]
+    month = c[1]
 
     suffix = '?year={}&month={}#com2'.format(year,month)
 
-    driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='/opt/google/chrome/chromedriver') #Chrome驱动的位置，此学习记录中安装到了Chrome程序根目录，该路径为绝对路径
+    driver = webdriver.Chrome()
+    #driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='/opt/google/chrome/chromedriver') #Chrome驱动的位置，此学习记录中安装到了Chrome程序根目录，该路径为绝对路径
 
 
     driver.get(base_url + suffix )
@@ -82,22 +86,45 @@ def get_data(year,month):
 
     temp = [_.replace(',','') for _ in temp if _ != None]
 
-    outcome.append( temp)
+    #outcome.append( temp)
                             
-
+    return temp
 
     driver.quit()
 
+def do_something(c):
 
-for i in range(2013,2021):
-    for j in range(1,13):
-        if not( i==2020 and j>6):
-            print('doing',i,j)
-            #get_data(i,j)
-            try:
-                get_data(i,j)
-            except:
-                outcome.append(['NaN']*7)
-    
-pd.DataFrame(outcome).to_csv('zhonghe.csv',encoding= 'gbk')
+    try:
+        res = get_data(c)
+        return res
+    except:
+        return ['*']*8
+
+c = [(i,j) for i in range(2013,2021) for j in range(1,13) if not( i==2020 and j>6)]
+
+
+
+
+from multiprocessing.dummy import Pool as ThreadPool
+import multiprocessing as mp
+
+array = mp.Array()
+#l = mp.Lock()
+que = mp.Queue()
+pool = ThreadPool()
+outcome = pool.map(get_data, c)
+pool.close()
+pool.join()
+
+##for i in range(2013,2021):
+##    for j in range(1,13):
+##        if not( i==2020 and j>6):
+##            print('doing',i,j)
+##            #get_data(i,j)
+##            try:
+##                get_data(i,j)
+##            except:
+##                outcome.append(['NaN']*7)
+##    
+##pd.DataFrame(outcome).to_csv('zhonghe.csv',encoding= 'gbk')
 
