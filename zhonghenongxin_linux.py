@@ -100,7 +100,7 @@ def do_something(c):
     except:
         return ['*']*8
 
-c = [(i,j) for i in range(2013,2021) for j in range(1,13) if not( i==2020 and j>6)]
+c = [(i,j) for i in range(2013,2015) for j in range(1,13) if not( i==2020 and j>6)]
 
 
 
