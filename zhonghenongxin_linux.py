@@ -147,3 +147,4 @@ pool.join()
     
 pd.DataFrame(outcome).to_csv('outcome_zhonghe.csv',encoding= 'gbk')
 
+###我修改了一条信息
