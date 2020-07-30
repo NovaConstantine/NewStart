@@ -54,8 +54,15 @@ def get_data(c):
 
     suffix = '?year={}&month={}#com2'.format(year,month)
 
-    driver = webdriver.Chrome()
-    #driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='/opt/google/chrome/chromedriver') #Chrome驱动的位置，此学习记录中安装到了Chrome程序根目录，该路径为绝对路径
+
+    #windows
+    
+##    option = webdriver.ChromeOptions()
+##    option.add_argument('headless')
+##    driver = webdriver.Chrome(options = option)
+
+    #Linux
+    driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='/opt/google/chrome/chromedriver') #Chrome驱动的位置，此学习记录中安装到了Chrome程序根目录，该路径为绝对路径
 
 
     driver.get(base_url + suffix )
@@ -80,27 +87,35 @@ def get_data(c):
 
     dangyuebishu = html.xpath('//*[@id="bod "]/div[4]/div[2]/div[5]/div/table/tbody/tr[2]/td[3]')[0].text
 
-    shijian = '{}年{}月'.format(i,j)
+    shijian = '{}年{}月'.format(year,month)
 
     temp = [shijian,fugaishengfen,fenzhijigoushu,zaidaikehushu,hujunyue,daikuanyue,dangyuejine,dangyuebishu]
 
     temp = [_.replace(',','') for _ in temp if _ != None]
 
-    #outcome.append( temp)
-                            
+    #Ori_out.append( temp)
+    
+    driver.quit()
+                        
     return temp
 
-    driver.quit()
+    
 
 def do_something(c):
 
     try:
+        #print(c)
         res = get_data(c)
+        #print(c,  res)
+
         return res
+    
     except:
+
+        
         return ['*']*8
 
-c = [(i,j) for i in range(2013,2015) for j in range(1,13) if not( i==2020 and j>6)]
+c = [(i,j) for i in range(2013,2021) for j in range(1,13) if not( i==2020 and j>6)]
 
 
 
@@ -108,23 +123,27 @@ c = [(i,j) for i in range(2013,2015) for j in range(1,13) if not( i==2020 and j>
 from multiprocessing.dummy import Pool as ThreadPool
 import multiprocessing as mp
 
-array = mp.Array()
+#array = mp.Array()
 #l = mp.Lock()
 que = mp.Queue()
 pool = ThreadPool()
-outcome = pool.map(get_data, c)
+
+
+Ori_out = []
+outcome = pool.map(do_something, c)
 pool.close()
 pool.join()
 
-##for i in range(2013,2021):
+##for i in range(2013,2016):
 ##    for j in range(1,13):
 ##        if not( i==2020 and j>6):
 ##            print('doing',i,j)
 ##            #get_data(i,j)
 ##            try:
-##                get_data(i,j)
+##                get_data([i,j])
 ##            except:
+##                print(i,j)
 ##                outcome.append(['NaN']*7)
-##    
-##pd.DataFrame(outcome).to_csv('zhonghe.csv',encoding= 'gbk')
+    
+pd.DataFrame(outcome).to_csv('outcome_zhonghe.csv',encoding= 'gbk')
 
