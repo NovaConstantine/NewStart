@@ -145,6 +145,6 @@ pool.join()
 ##                print(i,j)
 ##                outcome.append(['NaN']*7)
     
-pd.DataFrame(outcome).to_csv('outcome_zhonghe.csv',encoding= 'gbk')
+pd.DataFrame(outcome).to_csv('outcome_zhonghe.csv',encoding= 'gbk',header = None,index =False)
 
 ###我修改了一条信息
