@@ -34,4 +34,7 @@
 #Personal
 *.csv
 *.pyc
+*.jpg
+*.swp
+*.log
 _pyche_/

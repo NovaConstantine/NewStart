@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言板</title>
+</head>
+<body>
+    <h1>留  言  板</h1>
+    <form action="/message" method="post">
+        <textarea name="author" rows="1" cols ="40" placeholder="你的名字"></textarea>
+        <br>
+        <textarea name="message" rows="8" cols ="40" placeholder="留言内容"></textarea>
+        <br>
+        <!--button 是用来点击并提交，然后就会发送请求给服务器-->
+        <button type="submit">留言</button>
+
+    </form>
+    <br>
+    <br>
+    <br>
+    {{message}}
+</body>
+</html>
